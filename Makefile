@@ -26,3 +26,12 @@ endif
 	@bash -c "trap 'rm -f tcp4ServerWithThreads.o main' EXIT; ./tcp4ServerWithThreads.o $(PORT) $(MAX_CONNECTIONS)"
 	@./tcpServer.o $(PORT) $(MAX_CONNECTIONS)
 	@rm -f tcpServerWithThreads.o
+
+http11Server:
+ifeq ($(strip $(MAX_CONNECTIONS)),)
+	$(error MAX_CONNECTIONS is undefined. Usage: make <target> PORT=<port> MAX_CONNECTIONS=<max_connections>)
+endif
+	@$(CC) http11Server.c  $(CFLAGS) -o http11Server.o
+	@bash -c "trap 'rm -f *.o main' EXIT; ./http11Server.o $(PORT) $(MAX_CONNECTIONS)"
+	@./http11Server.o $(PORT) $(MAX_CONNECTIONS)
+	@rm -f *.o
